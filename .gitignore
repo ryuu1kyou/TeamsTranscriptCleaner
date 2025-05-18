@@ -23,6 +23,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+*.codebuddy
+*.idea
 
 # Installer logs
 debug.log
