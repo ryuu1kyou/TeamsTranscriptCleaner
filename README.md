@@ -72,7 +72,7 @@ TeamsTranscriptCleaner/
 
 ## UI 詳細要件
 
-![](assets\image.png)
+![](assets\image.png)![1747532045310](image/image.png)
 
 - Streamlit を使用し、画面を左 3 割・右 7 割で分割
 - 左側上部に OpenAI モデル選択（コンボボックス、料金のかからない最近の 5 モデルのみ）
