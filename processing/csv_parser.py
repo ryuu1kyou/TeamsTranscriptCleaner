@@ -3,25 +3,6 @@ import csv
 import io
 from typing import List, Dict
 
-def parse_csv(file) -> List[Dict[str, str]]:
-    """
-    CSVファイルから誤字脱字リストを解析する
-    
-    Args:
-        file: CSVファイルオブジェクト
-    
-    Returns:
-        誤字脱字リスト [{"誤": "誤字", "正": "正字"}, ...]
-    """
-    try:
-        # ファイルの内容を読み込んでからparse_csv_textに渡す
-        content = file.read().decode('utf-8')
-        return parse_csv_text(content)
-    except Exception as e:
-        print(f"CSVパース中にエラーが発生しました: {e}")
-        # エラーが発生した場合は空のリストを返す
-        return []
-
 def parse_csv_text(csv_text: str) -> List[Dict[str, str]]:
     """
     CSV形式のテキストから誤字脱字リストを解析する
@@ -52,6 +33,3 @@ def parse_csv_text(csv_text: str) -> List[Dict[str, str]]:
         return []
     
     return result
-
-
-
