@@ -173,7 +173,6 @@ with st.sidebar:
             st.session_state["correction_words"] = parse_csv_text(
                 csv_text_input
             )  # 即時パースして反映
-    # 他のモードではCSV関連UIは表示しない。st.session_state["csv_text"]等は保持される。
 
     # 訂正実行ボタンの処理
     disable_correction = not st.session_state["original_text"]
@@ -303,7 +302,7 @@ with st.sidebar:
                         corrected  # 手修正用エリアにも反映
                     )
                     # 訂正実行後は差分表示をリセット
-                    st.session_state["show_diff_checkbox_state"] = False
+                    st.session_state["show_diff_checkbox_state"] = True
                     st.success(
                         f"{dict(misspelling='訂正', grammar='校正', summarize='要約')[st.session_state['processing_mode']]}が完了しました（コスト: ${total_cost:.4f} USD）"
                     )
@@ -348,11 +347,13 @@ if new_corrected != st.session_state.get("corrected_text_edited", corrected_text
 
 # 差分表示のチェックボックス
 st.session_state["show_diff_checkbox_state"] = st.checkbox(
-    "差分表示", value=st.session_state["show_diff_checkbox_state"]
+    "差分表示",
+    value=st.session_state["show_diff_checkbox_state"],
+    disabled=disable_correction,
 )
 
 # 差分表示（show_diffがTrueのときのみ差分ビューアを表示）
-if st.session_state["show_diff_checkbox_state"]:
+if st.session_state["show_diff_checkbox_state"] and not disable_correction:
     # 差分比較前に正規化
     def normalize_text(text):
         # 改行コード統一、前後空白除去、全角スペース→半角スペース
@@ -406,10 +407,7 @@ if st.session_state["show_diff_checkbox_state"]:
         diff_html.append(diff_chars_html(a, b))
     st.markdown("<br>".join(diff_html), unsafe_allow_html=True)
 
-# 訂正後→訂正前コピー機能＋ダウンロードボタン（縦並び）
-disable_copy_button = not st.session_state.get(
-    "corrected_text_edited", ""
-)  # 編集後テキストがなければ無効
+disable_copy_button = not st.session_state.get("corrected_text_edited", "")
 
 if st.session_state["processing_mode"] == "misspelling":
     current_csv_text_for_copy = st.session_state.get("csv_text", "").strip()
